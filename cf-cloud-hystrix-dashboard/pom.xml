@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.ximu</groupId>
+    <artifactId>cf-cloud-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <groupId>com.ximu</groupId>
+  <artifactId>cf-cloud-hystrix-dashboard</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>cf-cloud-hystrix-dashboard</name>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+		<groupId>org.springframework.cloud</groupId>
+		<artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-actuator</artifactId>
+	</dependency>
+  </dependencies>
+  
+  <profiles>
+    <profile>
+      <!-- 本地开发环境 -->
+      <id>dev</id>
+      <properties>
+        <profiles.active>dev</profiles.active>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+    </profile>
+    <profile>
+      <!-- 测试环境 -->
+      <id>test</id>
+      <properties>
+        <profiles.active>test</profiles.active>
+      </properties>
+    </profile>
+    <profile>
+      <!-- 生产环境 -->
+      <id>prod</id>
+      <properties>
+        <profiles.active>prod</profiles.active>
+      </properties>
+    </profile>
+  </profiles>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>test/*</exclude>
+          <exclude>prod/*</exclude>
+          <exclude>dev/*</exclude>
+        </excludes>
+      </resource>
+      <resource>
+        <directory>src/main/resources/${profiles.active}</directory>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>repackage</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+</project>
